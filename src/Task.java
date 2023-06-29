@@ -1,8 +1,10 @@
+import java.util.Objects;
+
 public class Task {
-    private String name;
-    private String description;
+    private final String name;
+    private final String description;
     private int id;
-    private String status;
+    private  String status;
 
     public Task(String name, String description, String status) {
         this.name = name;
@@ -20,11 +22,20 @@ public class Task {
                 '}';
     }
 
-    public int getId() {
-        return id;
-    }
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+
+    public int getId() {
+        return id;
     }
 }

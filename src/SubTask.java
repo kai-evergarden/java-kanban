@@ -1,5 +1,5 @@
 public class SubTask extends Task {
-    private int epicId;
+    private final int epicId;
     private int id;
 
     public SubTask(String name, String description, String status, int epicId) {
