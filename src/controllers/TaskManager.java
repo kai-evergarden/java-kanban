@@ -1,3 +1,9 @@
+package controllers;
+
+import model.Epic;
+import model.SubTask;
+import model.Task;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -7,41 +13,25 @@ public class TaskManager {
     private final HashMap<Integer, Epic> epicMap = new HashMap<>();
     private final HashMap<Integer, SubTask> subTaskMap = new HashMap<>();
 
-    public void addTask(String name, String description, String status) {
-        Task task = new Task(name, description, status);
-        putTask(task);
-    }
-
-    public Task putTask(Task task) {
+    public Task addTask(Task task) {
         int i = incriminateId();
         task.setId(i);
         taskMap.put(i, task);
         return task;
     }
 
-    public void addEpic(String name, String description, String status) {
-        Epic epic = new Epic(name, description, status);
-        putEpic(epic);
-    }
-
-    public Epic putEpic(Epic epic) {
+    public Epic addEpic(Epic epic) {
         int i = incriminateId();
         epic.setId(i);
         epicMap.put(i, epic);
         return epic;
     }
 
-    public void addSubTask(int epicId, String name, String description, String status) {
-        SubTask subTask = new SubTask(name, description, status, epicId);
-        putSubTask(subTask);
-    }
-
-    public SubTask putSubTask(SubTask subTask) {
+    public SubTask addSubTask(SubTask subTask) {
         int i = incriminateId();
         subTask.setId(i);
         subTaskMap.put(i, subTask);
         epicMap.get(subTask.getEpicId()).setSubTasks(subTask);
-        changeEpicStatus(epicMap.get(subTask.getEpicId()));
         return subTask;
     }
 
@@ -57,19 +47,24 @@ public class TaskManager {
         return new ArrayList<>(epicMap.values());
     }
 
+    public ArrayList<SubTask> getListOfSubTasksOfEpic(Epic epic) {
+        return epic.getSubTasks();
+    }
+
     public void deleteTasks() {
         taskMap.clear();
     }
 
     public void deleteSubTasks() {
         subTaskMap.clear();
-        for(Epic epic : epicMap.values()) {
+        for (Epic epic : epicMap.values()) {
             epic.deleteSubTask();
         }
     }
 
     public void deleteEpicTasks() {
         epicMap.clear();
+        subTaskMap.clear();
     }
 
     public Task getTaskById(int id) {
@@ -93,7 +88,10 @@ public class TaskManager {
         epicMap.get(subTaskMap.get(id).getEpicId()).removeSubTask(id);
     }
 
-    public void deleteEpic(int id) {
+    public void deleteEpicById(int id) {
+        for (SubTask subTask : epicMap.get(id).getSubTasks()) {
+            subTaskMap.remove(subTask.getId());
+        }
         epicMap.remove(id);
     }
 
@@ -111,27 +109,35 @@ public class TaskManager {
         epicMap.get(subTask.getEpicId()).setSubTasks(subTask);
     }
 
-    public void changeEpicStatus(Epic epic) {
+    private void changeEpicStatus(Epic epic) {
         int new_count = 0;
         int done_count = 0;
-        for(SubTask subTask : epic.getSubTasks()) {
-            if(subTask.getStatus().equals("NEW")) {
+        for (SubTask subTask : epic.getSubTasks()) {
+            if (subTask.getStatus().equals("NEW")) {
                 new_count++;
-            } else if(subTask.getStatus().equals("DONE")) {
+            } else if (subTask.getStatus().equals("DONE")) {
                 done_count++;
             }
         }
-        if(new_count == epic.getSubTasks().size())  {
+        if (new_count == epic.getSubTasks().size()) {
             epic.setStatus("NEW");
-        } else if(done_count == epic.getSubTasks().size()) {
+        } else if (done_count == epic.getSubTasks().size()) {
             epic.setStatus("DONE");
         } else {
             epic.setStatus("IN_PROGRESS");
         }
     }
 
+    public void changeSubTaskStatus(SubTask subTask, String status) {
+        subTask.setStatus(status);
+        changeEpicStatus(epicMap.get(subTask.getEpicId()));
+    }
 
-    public int incriminateId() {
+    public void changeTaskStatus(Task task, String status) {
+        task.setStatus(status);
+    }
+
+    private int incriminateId() {
         return ++id;
     }
 }
