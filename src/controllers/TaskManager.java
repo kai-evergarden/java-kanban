@@ -48,7 +48,6 @@ public interface TaskManager {
 
     void changeSubTaskStatus(SubTask subTask, Status status);
 
-    void changeTaskStatus(Task task, Status status);
 
     HistoryManager getHistoryManager();
 
