@@ -34,22 +34,25 @@ public class Main {
         System.out.println("-------------------------------\n");
         System.out.println("Проверка истори: \n");
         taskManager.getTaskById(1);
-        taskManager.getTaskById(2);
+        System.out.println(taskManager.getHistoryManager().getHistory());
+        taskManager.getTaskById(1);
         taskManager.getEpicById(3);
-        taskManager.getSubtaskById(4);
-        taskManager.getSubtaskById(5);
-        taskManager.getEpicById(6);
-        taskManager.getSubtaskById(7);
-        taskManager.getTaskById(1);
-        taskManager.getTaskById(1);
-        taskManager.getTaskById(1);
-        taskManager.getTaskById(1);
-        taskManager.getTaskById(1);
-        taskManager.getTaskById(1);
-        taskManager.getTaskById(1);
-        taskManager.getTaskById(1);
+        System.out.println(taskManager.getHistoryManager().getHistory());
         taskManager.getTaskById(1);
         System.out.println(taskManager.getHistoryManager().getHistory());
+        taskManager.getTaskById(1);
+        System.out.println(taskManager.getHistoryManager().getHistory());
+        taskManager.getTaskById(1);
+        System.out.println(taskManager.getHistoryManager().getHistory());
+        taskManager.getTaskById(1);
+        System.out.println(taskManager.getHistoryManager().getHistory());
+        taskManager.getTaskById(1);
+        System.out.println(taskManager.getHistoryManager().getHistory());
+        taskManager.getTaskById(1);
+        System.out.println(taskManager.getHistoryManager().getHistory());
+        taskManager.getTaskById(1);
+        System.out.println(taskManager.getHistoryManager().getHistory());
+        taskManager.getTaskById(1);
         System.out.println(taskManager.getHistoryManager().getHistory().size());
     }
 
