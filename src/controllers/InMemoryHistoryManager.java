@@ -1,7 +1,6 @@
 package controllers;
 
 import model.Task;
-import model.Node;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +23,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         return tasks;
     }
 
-    public void removeNode(Node node) {
+    private void removeNode(Node node) {
         if(node == null) {
             System.out.println("Task not found in list.");
             return;
@@ -47,7 +46,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
 
 
-    public void linkLast(Task t) {
+    private void linkLast(Task t) {
         final Node newNode = new Node(t, null, tail); // Сначала создаем новый узел
         if (tail == null) {
             head = newNode;
@@ -76,10 +75,22 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void add(Task task) {
+            if(task == null) return;
             if (historyMap.containsKey(task.getId())) {
                 remove(task.getId());
             }
             historyMap.put(task.getId(), tail);
             linkLast(task);
+    }
+}
+class Node {
+    public Task data;
+    public Node next;
+    public Node prev;
+
+    public Node(Task data, Node next, Node prev) {
+        this.data = data;
+        this.next = next;
+        this.prev = prev;
     }
 }
