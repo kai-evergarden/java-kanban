@@ -8,7 +8,7 @@ import model.Task;
 import java.util.ArrayList;
 
 public interface TaskManager {
-    Task addTask(Task task);
+    Task addTask(Task task) throws ManagerSaveException;
 
     Epic addEpic(Epic epic);
 
@@ -44,7 +44,7 @@ public interface TaskManager {
 
     void changeEpic(Epic epic);
 
-    void chageSubTask(SubTask subTask);
+    void changeSubTask(SubTask subTask);
 
     void changeSubTaskStatus(SubTask subTask, Status status);
 

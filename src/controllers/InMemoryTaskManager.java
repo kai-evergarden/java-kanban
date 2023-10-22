@@ -10,10 +10,11 @@ import java.util.HashMap;
 
 public class InMemoryTaskManager implements TaskManager{
     private int id = 0;
-    private final HashMap<Integer, Task> taskMap = new HashMap<>();
-    private final HashMap<Integer, Epic> epicMap = new HashMap<>();
-    private final HashMap<Integer, SubTask> subTaskMap = new HashMap<>();
-    private final HistoryManager historyManager = Managers.getDefaultHistory();
+    protected final HashMap<Integer, Task> taskMap = new HashMap<>();
+    protected final HashMap<Integer, Epic> epicMap = new HashMap<>();
+    protected final HashMap<Integer, SubTask> subTaskMap = new HashMap<>();
+    protected final HistoryManager historyManager = Managers.getDefaultHistory();
+
 
     @Override
     public Task addTask(Task task) {
@@ -81,7 +82,6 @@ public class InMemoryTaskManager implements TaskManager{
     public void deleteEpicTasks() {
         epicMap.clear();
         subTaskMap.clear();
-        // не очень что тут нужно персчитывать есть мы удаляем все эпики x_x
     }
 
     @Override
@@ -133,7 +133,7 @@ public class InMemoryTaskManager implements TaskManager{
     }
 
     @Override
-    public void chageSubTask(SubTask subTask) {
+    public void changeSubTask(SubTask subTask) {
         subTaskMap.put(subTask.getId(), subTask);
         epicMap.get(subTask.getEpicId()).removeSubTask(subTask.getId());
         epicMap.get(subTask.getEpicId()).setSubTasks(subTask);
@@ -168,6 +168,10 @@ public class InMemoryTaskManager implements TaskManager{
 
     private int incriminateId() {
         return ++id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override
