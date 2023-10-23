@@ -1,5 +1,6 @@
 package controllers;
 
+import exceptions.ManagerSaveException;
 import model.Epic;
 import model.Status;
 import model.SubTask;
@@ -8,11 +9,11 @@ import model.Task;
 import java.util.ArrayList;
 
 public interface TaskManager {
-    Task addTask(Task task) throws ManagerSaveException;
+    void addTask(Task task);
 
-    Epic addEpic(Epic epic);
+    void addEpic(Epic epic);
 
-    SubTask addSubTask(SubTask subTask);
+    void addSubTask(SubTask subTask);
 
     ArrayList<Task> getListOfTasks();
 

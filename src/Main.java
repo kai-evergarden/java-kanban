@@ -9,7 +9,6 @@ import java.io.IOException;
 
 
 public class Main {
-
     public static void main(String[] args) {
 //        try {
 //            var taskManager = FileBackedTasksManager.loadFromFile(FILE);
@@ -39,11 +38,11 @@ public class Main {
 //        taskManager.addTask(task1);
 //    }
 
-//    public static void printTest(TaskManager taskManager) {
-//        System.out.println("-------------------------------");
-//        System.out.println(taskManager.getListOfTasks());
-//        System.out.println(taskManager.getListOfEpics());
-//        System.out.println(taskManager.getListOfSubTasks());
-//        System.out.println("-------------------------------\n");
-//    }
+    public static void printTest(TaskManager taskManager) {
+        System.out.println("-------------------------------");
+        System.out.println(taskManager.getListOfTasks());
+        System.out.println(taskManager.getListOfEpics());
+        System.out.println(taskManager.getListOfSubTasks());
+        System.out.println("-------------------------------\n");
+    }
 }
