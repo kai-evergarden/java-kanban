@@ -37,11 +37,7 @@ public class Epic extends Task {
     }
 
     public void removeSubTask(int id) {
-        for (int i = 0; i < subTasks.size(); i++) {
-            if (subTasks.get(i).getId() == id) {
-                subTasks.remove(i);
-            }
-        }
+        subTasks.removeIf(subTask -> subTask.getId() == id);
         subTasks.sort(Comparator.comparing(Task::getStartTime));
     }
 
