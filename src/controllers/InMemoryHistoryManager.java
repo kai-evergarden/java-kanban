@@ -38,7 +38,6 @@ public class InMemoryHistoryManager implements HistoryManager {
         } else {
             tail = node.prev;
         }
-        // обнуление ссылок удаленного узла
         node.next = null;
         node.prev = null;
 
@@ -47,13 +46,13 @@ public class InMemoryHistoryManager implements HistoryManager {
 
 
     private void linkLast(Task t) {
-        final Node newNode = new Node(t, null, tail); // Сначала создаем новый узел
+        final Node newNode = new Node(t, null, tail);
         if (tail == null) {
             head = newNode;
         } else {
             tail.next = newNode;
         }
-        tail = newNode; // Затем обновляем хвост
+        tail = newNode;
     }
 
 

@@ -1,19 +1,21 @@
 package controllers;
 
 import exceptions.ManagerSaveException;
+import exceptions.TimeCrossingException;
 import model.Epic;
 import model.Status;
 import model.SubTask;
 import model.Task;
 
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 public interface TaskManager {
-    void addTask(Task task);
+    void addTask(Task task) throws TimeCrossingException;
 
     void addEpic(Epic epic);
 
-    void addSubTask(SubTask subTask);
+    void addSubTask(SubTask subTask) throws  TimeCrossingException;
 
     ArrayList<Task> getListOfTasks();
 
@@ -22,6 +24,8 @@ public interface TaskManager {
     ArrayList<Epic> getListOfEpics();
 
     ArrayList<SubTask> getListOfSubTasksOfEpic(Epic epic);
+
+    TreeSet<Task> getPrioritizedTasks();
 
     void deleteTasks();
 
@@ -41,11 +45,11 @@ public interface TaskManager {
 
     void deleteEpicById(int id);
 
-    void changeTask(Task task);
+    void changeTask(Task task) throws TimeCrossingException;
 
-    void changeEpic(Epic epic);
+    void changeEpic(Epic epic) throws TimeCrossingException;
 
-    void changeSubTask(SubTask subTask);
+    void changeSubTask(SubTask subTask) throws TimeCrossingException;
 
     void changeSubTaskStatus(SubTask subTask, Status status);
 
