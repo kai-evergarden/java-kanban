@@ -28,27 +28,27 @@ class EpicTest {
     }
 
     @Test
-    void statusShouldBeNewWhenAllSubTasksAreNew() throws TimeCrossingException {
+    void statusShouldBeNewWhenAllSubTasksAreNew() {
         setUp();
         Assertions.assertEquals(NEW, epic.getStatus());
     }
 
     @Test
-    void statusShouldBeDoneWhenAllSubTasksAreDone() throws TimeCrossingException {
+    void statusShouldBeDoneWhenAllSubTasksAreDone() {
         setUp();
-        changeStatusToDone(DONE, subTask,subTask1, subTask2);
+        changeStatusToDone(DONE, subTask, subTask1, subTask2);
         Assertions.assertEquals(DONE, epic.getStatus());
     }
 
     @Test
-    void statusShouldBeInProgressWhenASubTaskIsDone() throws TimeCrossingException {
+    void statusShouldBeInProgressWhenASubTaskIsDone() {
         setUp();
         changeStatus(subTask, DONE);
         Assertions.assertEquals(IN_PROGRESS, epic.getStatus());
     }
 
     @Test
-    void statusShouldBeInProgressWhenAllSubTasksAreInProgress() throws TimeCrossingException {
+    void statusShouldBeInProgressWhenAllSubTasksAreInProgress() {
         setUp();
         changeStatusToDone(IN_PROGRESS, subTask1, subTask2);
         Assertions.assertEquals(IN_PROGRESS, epic.getStatus());
@@ -64,7 +64,7 @@ class EpicTest {
         inMemoryTaskManager.changeSubTaskStatus(subTask, status);
     }
 
-    private void setUp() throws TimeCrossingException {
+    private void setUp() {
         inMemoryTaskManager = new InMemoryTaskManager();
         epic = new Epic("Test", "Test");
         inMemoryTaskManager.addEpic(epic);

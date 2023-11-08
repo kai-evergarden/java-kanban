@@ -20,8 +20,6 @@ public class Main {
     public static void main(String[] args) throws TimeCrossingException {
         var test = FileBackedTasksManager.loadFromFile(FILE);
         test.addEpic(new Epic("test", "test"));
-//        System.out.println(test.getListOfEpics());
-        test.addSubTask(new SubTask("test", "test", 1, LocalDateTime.now().plusHours(1), 60));
     }
 
 

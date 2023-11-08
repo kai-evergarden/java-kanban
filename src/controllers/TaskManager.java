@@ -11,11 +11,11 @@ import java.util.ArrayList;
 import java.util.TreeSet;
 
 public interface TaskManager {
-    void addTask(Task task) throws TimeCrossingException;
+    void addTask(Task task);
 
     void addEpic(Epic epic);
 
-    void addSubTask(SubTask subTask) throws  TimeCrossingException;
+    void addSubTask(SubTask subTask) throws TimeCrossingException;
 
     ArrayList<Task> getListOfTasks();
 
@@ -45,11 +45,11 @@ public interface TaskManager {
 
     void deleteEpicById(int id);
 
-    void changeTask(Task task) throws TimeCrossingException;
+    void changeTask(Task task);
 
-    void changeEpic(Epic epic) throws TimeCrossingException;
+    void changeEpic(Epic epic);
 
-    void changeSubTask(SubTask subTask) throws TimeCrossingException;
+    void changeSubTask(SubTask subTask);
 
     void changeSubTaskStatus(SubTask subTask, Status status);
 

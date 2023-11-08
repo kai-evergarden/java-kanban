@@ -3,6 +3,7 @@ package model;
 import com.ibm.java.diagnostics.utils.plugins.LocalPriorityClassloader;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -45,6 +46,15 @@ public class Task {
         this.description = description;
         this.status = status;
         this.id = id;
+        this.startTime = startTime;
+        this.duration = duration;
+    }
+
+    public Task(int id, TaskType taskType, String name, String description, LocalDateTime startTime, int duration) {
+        this.id = id;
+        this.taskType = taskType;
+        this.name = name;
+        this.description = description;
         this.startTime = startTime;
         this.duration = duration;
     }
@@ -101,7 +111,9 @@ public class Task {
     }
 
     public LocalDateTime getEndTime() {
-        return startTime.plusMinutes(duration);
+        if (startTime != null)
+            return startTime.plusMinutes(duration);
+        return LocalDateTime.MIN;
     }
 
     public void setStartTime(LocalDateTime startTime) {

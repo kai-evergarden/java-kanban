@@ -91,7 +91,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                         arr[4], LocalDateTime.parse(arr[5], FORMATTER), Integer.parseInt(arr[6]), Integer.parseInt(arr[7]));
             case EPIC:
                 LocalDateTime startTime = (arr[5].equals("null")) ? null : LocalDateTime.parse(arr[5], FORMATTER);
-                return new Epic(Integer.parseInt(arr[0]), TaskType.valueOf(arr[1]), arr[2], Status.valueOf(arr[3]),
+                return new Epic(Integer.parseInt(arr[0]), TaskType.valueOf(arr[1]), arr[2],
                         arr[4], startTime, Integer.parseInt(arr[6]));
 
         }
@@ -160,13 +160,13 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void addTask(Task task) throws TimeCrossingException {
+    public void addTask(Task task) {
         super.addTask(task);
         save();
     }
 
     @Override
-    public void addSubTask(SubTask subTask) throws TimeCrossingException {
+    public void addSubTask(SubTask subTask) {
         super.addSubTask(subTask);
         save();
     }
@@ -217,19 +217,19 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void changeTask(Task task) throws TimeCrossingException {
+    public void changeTask(Task task) {
         super.changeTask(task);
         save();
     }
 
     @Override
-    public void changeEpic(Epic epic) throws TimeCrossingException {
+    public void changeEpic(Epic epic) {
         super.changeEpic(epic);
         save();
     }
 
     @Override
-    public void changeSubTask(SubTask subTask) throws TimeCrossingException {
+    public void changeSubTask(SubTask subTask) {
         super.changeSubTask(subTask);
         save();
     }

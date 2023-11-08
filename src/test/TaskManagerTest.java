@@ -18,7 +18,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     protected LocalDateTime time;
 
     @Test
-    void addTask() throws TimeCrossingException {
+    void addTask() {
         var task = new Task("test", "test", time, 60);
         taskManager.addTask(task);
         var saveTask = taskManager.getTaskById(task.getId());
@@ -31,7 +31,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void addEpic() throws TimeCrossingException {
+    void addEpic() {
         var epic = new Epic("test", "test");
         taskManager.addEpic(epic);
         var saveEpic = taskManager.getEpicById(epic.getId());
@@ -44,7 +44,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void addSubTask() throws TimeCrossingException {
+    void addSubTask() {
         var epic = new Epic("test", "test");
         taskManager.addEpic(epic);
         var subTask = new SubTask("test", "test", epic.getId(), time, 60);
@@ -72,7 +72,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
 
     @Test
-    void getListOfTasksTest() throws TimeCrossingException {
+    void getListOfTasksTest() {
         var task = new Task("test", "test", time, 60);
         var task1 = new Task("test", "test", time.plusHours(1), 60);
         var task2 = new Task("test", "test", time.plusHours(2), 60);
@@ -87,7 +87,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void getListOfSubTasksTest() throws TimeCrossingException {
+    void getListOfSubTasksTest() {
         var epic = new Epic("test", "test");
         var task = new SubTask("test", "test", 1, time, 60);
         var task1 = new SubTask("test", "test", 1, time.plusHours(1), 60);
@@ -105,7 +105,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void getListOfEpicsTest() throws TimeCrossingException {
+    void getListOfEpicsTest() {
         var epic = new Epic("test", "test");
         var epic1 = new Epic("test", "test");
         var epic2 = new Epic("test", "test");
@@ -120,7 +120,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void getPrioritizedTasksTest() throws TimeCrossingException {
+    void getPrioritizedTasksTest() {
         var epic = new Epic("test", "test");
 
         var subTask1 = new SubTask("late task", "test", 1, time.plusHours(2), 60);
@@ -144,7 +144,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
 
     @Test
-    void getListOfSubTasksOfEpicTest() throws TimeCrossingException {
+    void getListOfSubTasksOfEpicTest() {
         var epic = new Epic("test", "test");
         var task = new SubTask("test", "test", 1, time, 60);
         var task1 = new SubTask("test", "test", 1, time.plusHours(1), 60);
@@ -165,7 +165,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void deleteListOfTasksTest() throws TimeCrossingException {
+    void deleteListOfTasksTest() {
         var task = new Task("test", "test", time, 60);
         var task1 = new Task("test", "test", time.plusHours(1), 60);
         var task2 = new Task("test", "test", time.plusHours(2), 60);
@@ -187,7 +187,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void deleteListOfEpicTest() throws TimeCrossingException {
+    void deleteListOfEpicTest() {
         var epic = new Epic("test", "test");
         var epic1 = new Epic("test", "test");
         var epic2 = new Epic("test", "test");
@@ -215,7 +215,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void deleteListOfSubTasksTest() throws TimeCrossingException {
+    void deleteListOfSubTasksTest() {
         var epic = new Epic("test", "test");
         var subTask = new SubTask("test", "test", 1, time, 60);
         var subTask1 = new SubTask("test", "test", 1, time.plusHours(1), 60);
@@ -241,7 +241,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void getTaskByIdTest() throws TimeCrossingException {
+    void getTaskByIdTest() {
         var task = new Task("test", "test", time, 60);
         taskManager.addTask(task);
 
@@ -252,7 +252,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void getSubtaskByIdTest() throws TimeCrossingException {
+    void getSubtaskByIdTest() {
         var epic = new Epic("test", "test");
         var subTask = new SubTask("test", "test", 1, time, 60);
         taskManager.addEpic(epic);
@@ -265,7 +265,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void getEpicByIdTest() throws TimeCrossingException {
+    void getEpicByIdTest() {
         var epic = new Epic("test", "test");
         taskManager.addEpic(epic);
 
@@ -276,7 +276,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void deleteTaskByIdTest() throws TimeCrossingException {
+    void deleteTaskByIdTest() {
         var task = new Task("test", "test", time, 60);
         taskManager.addTask(task);
         taskManager.deleteTaskById(1);
@@ -286,7 +286,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void deleteSubtaskByIdTest() throws TimeCrossingException {
+    void deleteSubtaskByIdTest() {
         var epic = new Epic("test", "test");
         var subTask = new SubTask("test", "test", 1, time, 60);
         taskManager.addEpic(epic);
@@ -299,7 +299,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void deleteEpicByIdTest() throws TimeCrossingException {
+    void deleteEpicByIdTest() {
         var epic = new Epic("test", "test");
         var epic1 = new Epic("test", "test");
         var subTask = new SubTask("test1", "test", 1, time.plusHours(5), 60); //2
@@ -321,10 +321,10 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void changeTaskTest() throws TimeCrossingException {
+    void changeTaskTest() {
         var task = new Task("test", "test", time, 60);
         taskManager.addTask(task);
-        var taskToChange = new Task("new test", "new test", Status.IN_PROGRESS, 1 , time.plusHours(1), 60);
+        var taskToChange = new Task("new test", "new test", Status.IN_PROGRESS, 1, time.plusHours(1), 60);
         taskManager.changeTask(taskToChange);
         var test = taskManager.getTaskById(1);
         Assertions.assertEquals(taskToChange, test);
@@ -333,7 +333,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
 
     @Test
-    void changeSubTaskTest() throws TimeCrossingException {
+    void changeSubTaskTest() {
         var epic = new Epic("test", "test");
         var subTask = new SubTask("test", "test", 1, time, 60);
         var subTask1 = new SubTask("test", "test", 1, time.plusHours(2), 60);

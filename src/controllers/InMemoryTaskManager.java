@@ -18,7 +18,7 @@ public class InMemoryTaskManager implements TaskManager {
 
 
     @Override
-    public void addTask(Task task) throws TimeCrossingException {
+    public void addTask(Task task) {
         if (task == null) throw new IllegalArgumentException("Task cannot be null");
         if (isIntersection(task)) throw new TimeCrossingException("Intersection found");
         int i = incriminateId();
@@ -37,7 +37,7 @@ public class InMemoryTaskManager implements TaskManager {
 
 
     @Override
-    public void addSubTask(SubTask subTask) throws TimeCrossingException {
+    public void addSubTask(SubTask subTask) {
         if (subTask == null) throw new IllegalArgumentException("SubTask cannot be null");
         if (isIntersection(subTask)) throw new TimeCrossingException("Intersection found");
         int i = incriminateId();
@@ -94,6 +94,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteEpicTasks() {
         epicMap.values().stream().filter(taskTreeSet::contains).forEach(taskTreeSet::remove);
+        //стрим для фильтрация использую
         epicMap.clear();
         deleteSubTasks();
     }
@@ -150,7 +151,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void changeTask(Task task) throws TimeCrossingException {
+    public void changeTask(Task task) {
         if (task == null) throw new IllegalArgumentException("Task cannot be null");
         if (isIntersection(task)) throw new TimeCrossingException("Intersection found");
         taskTreeSet.removeIf(taskFromTreeSet -> taskFromTreeSet.getId() == task.getId());
@@ -159,7 +160,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void changeEpic(Epic epic) throws TimeCrossingException {
+    public void changeEpic(Epic epic) {
         if (epic == null) throw new IllegalArgumentException("Epic cannot be null");
         if (isIntersection(epic)) throw new TimeCrossingException("Intersection found");
         List<SubTask> subTaskList = epicMap.get(epic.getId()).getSubTasks();
@@ -168,7 +169,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void changeSubTask(SubTask subTask) throws TimeCrossingException {
+    public void changeSubTask(SubTask subTask) {
         if (subTask == null) throw new IllegalArgumentException("SubTask cannot be null");
         if (isIntersection(subTask)) throw new TimeCrossingException("Intersection found");
         taskTreeSet.removeIf(taskFromTreeSet -> taskFromTreeSet.getId() == subTask.getId());
