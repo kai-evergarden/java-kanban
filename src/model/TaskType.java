@@ -3,5 +3,9 @@ package model;
 public enum TaskType {
     TASK,
     SUBTASK,
-    EPIC
+    EPIC;
+
+    public String getName() {
+        return this.name().toLowerCase();
+    }
 }

@@ -77,14 +77,16 @@ public class Task {
 
     @Override
     public String toString() {
-        return "model.Task{" +
+        return "Task{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                ", taskType=" + taskType +
                 ", id=" + id +
-                ", status='" + status + '\'' +
+                ", startTime=" + startTime +
+                ", duration=" + duration +
+                ", status=" + status +
                 '}';
     }
-
 
     public void setId(int id) {
         this.id = id;
