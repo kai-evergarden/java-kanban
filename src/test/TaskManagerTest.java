@@ -1,7 +1,6 @@
 package test;
 
-import controllers.TaskManager;
-import exceptions.TimeCrossingException;
+import controllers.interfaces.TaskManager;
 import model.Epic;
 import model.Status;
 import model.SubTask;

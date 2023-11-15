@@ -1,6 +1,6 @@
 package test;
 
-import controllers.InMemoryTaskManager;
+import controllers.managers.InMemoryTaskManager;
 import model.Epic;
 import model.Status;
 import model.SubTask;

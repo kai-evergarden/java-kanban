@@ -1,5 +1,7 @@
-package controllers;
+package controllers.managers;
 
+import controllers.interfaces.HistoryManager;
+import controllers.interfaces.TaskManager;
 import exceptions.TimeCrossingException;
 import model.Epic;
 import model.Status;

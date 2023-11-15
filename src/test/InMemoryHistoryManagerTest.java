@@ -1,6 +1,6 @@
 package test;
 
-import controllers.InMemoryHistoryManager;
+import controllers.managers.InMemoryHistoryManager;
 import model.Task;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

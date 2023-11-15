@@ -1,6 +1,6 @@
 package test;
 
-import controllers.InMemoryTaskManager;
+import controllers.managers.InMemoryTaskManager;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.time.LocalDateTime;

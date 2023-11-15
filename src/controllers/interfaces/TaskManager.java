@@ -1,6 +1,6 @@
-package controllers;
+package controllers.interfaces;
 
-import exceptions.ManagerSaveException;
+import controllers.interfaces.HistoryManager;
 import exceptions.TimeCrossingException;
 import model.Epic;
 import model.Status;

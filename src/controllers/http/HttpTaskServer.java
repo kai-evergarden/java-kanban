@@ -1,9 +1,13 @@
-package controllers;
+package controllers.http;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
+import controllers.managers.FileBackedTasksManager;
+import controllers.managers.Managers;
+import controllers.interfaces.TaskManager;
+import exceptions.IdDoesntExistException;
+import exceptions.ManagerSaveException;
 import model.Epic;
 import model.SubTask;
 import model.Task;
@@ -12,7 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 
@@ -41,9 +45,12 @@ public class HttpTaskServer {
         httpServer.createContext("/tasks", this::tasksHandler);
     }
 
-    public static void main(String[] args) throws IOException {
-        HttpTaskServer taskServer = new HttpTaskServer();
-        taskServer.httpServer.start();
+    public void start() {
+        httpServer.start();
+    }
+
+    public void stop() {
+        httpServer.stop(0);
     }
 
     //как избавится от миддиарда ифов
@@ -53,50 +60,56 @@ public class HttpTaskServer {
             String requestMethod = httpExchange.getRequestMethod();
             switch (requestMethod) {
                 case GET:
-                    if (Pattern.matches("^/tasks/task/\\?\\d+$", path)) {
-                        httpExchange.sendResponseHeaders(200, 0);
-                        writeResponse(httpExchange, gson.toJson(taskManager.getTaskById(getIdFromPath(path))));
-                    } else if (Pattern.matches("^/tasks/subtak/\\?\\d+$", path)) {
-                        httpExchange.sendResponseHeaders(200, 0);
-                        writeResponse(httpExchange, gson.toJson(taskManager.getSubtaskById(getIdFromPath(path))));
-                    } else if (Pattern.matches("^/tasks/epic/\\?\\d+$", path)) {
-                        httpExchange.sendResponseHeaders(200, 0);
-                        writeResponse(httpExchange, gson.toJson(taskManager.getEpicById(getIdFromPath(path))));
-                    } else if (Pattern.matches("^/tasks/task/", path)) {
-                        httpExchange.sendResponseHeaders(200, 0);
-                        writeResponse(httpExchange, gson.toJson(taskManager.getListOfTasks()));
-                    } else if (Pattern.matches("^/tasks/subtask/+$", path)) {
-                        httpExchange.sendResponseHeaders(200, 0);
-                        writeResponse(httpExchange, gson.toJson(taskManager.getListOfSubTasks()));
-                    } else if (Pattern.matches("^/tasks/epic/+$", path)) {
-                        httpExchange.sendResponseHeaders(200, 0);
-                        writeResponse(httpExchange, gson.toJson(taskManager.getListOfEpics()));
-                    } else if (Pattern.matches("^/tasks/subtak/epic/\\?\\d+$", path)) {
-                        httpExchange.sendResponseHeaders(200, 0);
-                        writeResponse(httpExchange, gson.toJson(taskManager.getListOfSubTasksOfEpic(
-                                taskManager.getEpicById(getIdFromPath(path)))));
-                    } else if (Pattern.matches("^/tasks/history+$", path)) {
-                        httpExchange.sendResponseHeaders(200, 0);
-                        writeResponse(httpExchange, gson.toJson(taskManager.
-                                getHistoryManager().getHistory()));
-                    } else if (Pattern.matches("^/tasks/+$", path)) {
-                        httpExchange.sendResponseHeaders(200, 0);
-                        writeResponse(httpExchange, gson.toJson(taskManager.getPrioritizedTasks()));
-                    } else {
+                    try {
+                        if (Pattern.matches("^/tasks/task/*$", path)) {
+                            httpExchange.sendResponseHeaders(200, 0);
+                            writeResponse(httpExchange, gson.toJson(taskManager.getTaskById(getIdFromPath(path))));
+                        } else if (Pattern.matches("^/tasks/subtask/*$", path)) {
+                            httpExchange.sendResponseHeaders(200, 0);
+                            writeResponse(httpExchange, gson.toJson(taskManager.getSubtaskById(getIdFromPath(path))));
+                        } else if (Pattern.matches("^/tasks/epic/*$", path)) {
+                            httpExchange.sendResponseHeaders(200, 0);
+                            writeResponse(httpExchange, gson.toJson(taskManager.getEpicById(getIdFromPath(path))));
+                        } else if (Pattern.matches("^/tasks/task$", path)) {
+                            httpExchange.sendResponseHeaders(200, 0);
+                            writeResponse(httpExchange, gson.toJson(taskManager.getListOfTasks()));
+                        } else if (Pattern.matches("^/tasks/subtask$", path)) {
+                            httpExchange.sendResponseHeaders(200, 0);
+                            writeResponse(httpExchange, gson.toJson(taskManager.getListOfSubTasks()));
+                        } else if (Pattern.matches("^/tasks/epic$", path)) {
+                            httpExchange.sendResponseHeaders(200, 0);
+                            writeResponse(httpExchange, gson.toJson(taskManager.getListOfEpics()));
+                        } else if (Pattern.matches("^/tasks/subtask/epic/*$", path)) {
+                            httpExchange.sendResponseHeaders(200, 0);
+                            writeResponse(httpExchange, gson.toJson(taskManager.getListOfSubTasksOfEpic(
+                                    taskManager.getEpicById(getIdFromPath(path)))));
+                        } else if (Pattern.matches("^/tasks/history$", path)) {
+                            httpExchange.sendResponseHeaders(200, 0);
+                            writeResponse(httpExchange, gson.toJson(taskManager.
+                                    getHistoryManager().getHistory()));
+                        } else if (Pattern.matches("^/tasks$", path)) {
+                            httpExchange.sendResponseHeaders(200, 0);
+                            writeResponse(httpExchange, gson.toJson(taskManager.getPrioritizedTasks()));
+                        } else {
+                            httpExchange.sendResponseHeaders(404, 0);
+                            writeResponse(httpExchange, "link doesn't exist");
+                        }
+                        break;
+                    } catch (IdDoesntExistException e) {
                         httpExchange.sendResponseHeaders(404, 0);
-                        writeResponse(httpExchange, "link doesn't exist");
+                        writeResponse(httpExchange, "Id doesnt't exist");
                     }
-                    break;
                 case POST:
-                    if (Pattern.matches("^/tasks/task/+$", path)) {
+                    if (Pattern.matches("^/tasks/task$", path)) {
                         Task task = gson.fromJson(getJsonFromRequest(httpExchange), Task.class);
                         taskManager.addTask(task);
                         httpExchange.sendResponseHeaders(200, 0);
-                    } else if (Pattern.matches("^/tasks/subtask/+$", path)) {
+                    } else if (Pattern.matches("^/tasks/subtask$", path)) {
                         SubTask subTask = gson.fromJson(getJsonFromRequest(httpExchange), SubTask.class);
+                        System.out.println(taskManager.getListOfEpics());
                         taskManager.addSubTask(subTask);
                         httpExchange.sendResponseHeaders(200, 0);
-                    } else if (Pattern.matches("^/tasks/epic/+$", path)) {
+                    } else if (Pattern.matches("^/tasks/epic$", path)) {
                         Epic epic = gson.fromJson(getJsonFromRequest(httpExchange), Epic.class);
                         taskManager.addEpic(epic);
                         httpExchange.sendResponseHeaders(200, 0);
@@ -106,22 +119,23 @@ public class HttpTaskServer {
                     }
                     break;
                 case DELETE:
-                    if (Pattern.matches("^/tasks/task/\\?\\d+$", path)) {
+                    if (Pattern.matches("^/tasks/task/*$", path)) {
                         taskManager.deleteTaskById(getIdFromPath(path));
                         httpExchange.sendResponseHeaders(200, 0);
-                    } else if (Pattern.matches("^/tasks/subtak/\\?\\d+$", path)) {
+                    } else if (Pattern.matches("^/tasks/subtask/*$", path)) {
                         taskManager.deleteSubTaskById(getIdFromPath(path));
                         httpExchange.sendResponseHeaders(200, 0);
-                    } else if (Pattern.matches("^/tasks/epic/\\?\\d+$", path)) {
+                    } else if (Pattern.matches("^/tasks/epic/*$", path)) {
+                        System.out.println(getIdFromPath(path));
                         taskManager.deleteEpicById(getIdFromPath(path));
                         httpExchange.sendResponseHeaders(200, 0);
-                    } else if (Pattern.matches("^/tasks/task/+$", path)) {
+                    } else if (Pattern.matches("^/tasks/task$", path)) {
                         taskManager.deleteTasks();
                         httpExchange.sendResponseHeaders(200, 0);
-                    } else if (Pattern.matches("^/tasks/subtask/+$", path)) {
+                    } else if (Pattern.matches("^/tasks/subtask$", path)) {
                         taskManager.deleteSubTasks();
                         httpExchange.sendResponseHeaders(200, 0);
-                    } else if (Pattern.matches("^/tasks/epic/+$", path)) {
+                    } else if (Pattern.matches("^/tasks/epic$", path)) {
                         taskManager.deleteEpicTasks();
                         httpExchange.sendResponseHeaders(200, 0);
                     } else {
@@ -133,8 +147,8 @@ public class HttpTaskServer {
                     httpExchange.sendResponseHeaders(402, 0);
                     break;
             }
-        } catch (Exception e) {
-            e.getStackTrace();
+        } catch (IOException e) {
+            throw new ManagerSaveException("cannot send response");
         } finally {
             httpExchange.close();
         }
@@ -147,8 +161,19 @@ public class HttpTaskServer {
         int res = Integer.parseInt(pathArr[index].substring(1, index));
         if (res < 0)
             throw new IllegalArgumentException("Wrong id");
-        else
+        else if (!isIdExist(res)) {
+            throw new IdDoesntExistException("Id doesnt exist");
+        } else {
             return res;
+        }
+
+    }
+
+    public boolean isIdExist(int id) {
+        Optional<Task> check = taskManager.getPrioritizedTasks().stream()
+                .filter(task -> task.getId() == id)
+                .findFirst();
+          return check.isPresent();
     }
 
     public String getJsonFromRequest(HttpExchange exchange) {

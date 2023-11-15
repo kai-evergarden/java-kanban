@@ -1,4 +1,4 @@
-package controllers;
+package controllers.KV;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -9,6 +9,7 @@ import java.util.Map;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
+import controllers.http.HttpTaskServer;
 
 /**
  * Постман: https://www.getpostman.com/collections/a83b61d9e1c81c10575c
@@ -125,5 +126,10 @@ public class KVServer {
         h.getResponseHeaders().add("Content-Type", "application/json");
         h.sendResponseHeaders(200, resp.length);
         h.getResponseBody().write(resp);
+    }
+
+    public void stop(){
+        System.out.println("Сервер остановлен");
+        server.stop(0);
     }
 }
